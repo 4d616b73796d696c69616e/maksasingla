@@ -91,7 +91,6 @@ function appendToLog(text, turn = null) {
   let enemyAlive = true;
   let combatTurnNumber = 1;
 
-  /*
   let map = [
     "##########",
     "#........#",
@@ -107,54 +106,6 @@ function appendToLog(text, turn = null) {
     "#........#",
     "##########"
   ].map(row => row.split(""));
-*/
-
-let map = [];
-let mapLoaded = false;
-const viewSize = 9; // musi być nieparzyste
-const viewHalf = Math.floor(viewSize / 2);
-
-fetch("mapa.txt")
-  .then((response) => response.text())
-  .then((text) => {
-    map = text.trim().split("\n").map(row => row.split(""));
-    mapHeight = map.length;
-    mapWidth = map[0].length;
-    mapLoaded = true;
-    drawMap();
-  })
-  .catch(err => {
-    console.error("Nie udało się wczytać mapy:", err);
-  });
-
-function drawMap() {
-  if (!mapLoaded) return;
-
-  let output = "";
-
-  for (let yOffset = -viewHalf; yOffset <= viewHalf; yOffset++) {
-    for (let xOffset = -viewHalf; xOffset <= viewHalf; xOffset++) {
-      const mapX = player.x + xOffset;
-      const mapY = player.y + yOffset;
-
-      if (mapX === player.x && mapY === player.y) {
-        let symbol = "@";
-        if (player.direction === "up") symbol = "↑";
-        if (player.direction === "down") symbol = "↓";
-        if (player.direction === "left") symbol = "←";
-        if (player.direction === "right") symbol = "→";
-        output += symbol;
-      } else if (mapY >= 0 && mapY < map.length && mapX >= 0 && mapX < map[0].length) {
-        output += map[mapY][mapX];
-      } else {
-        output += "."; // poza mapą
-      }
-    }
-    output += "\n";
-  }
-
-  document.getElementById("game").textContent = output;
-}
 
   let player = { x: 1, y: 1, direction: "down" };
   
@@ -448,7 +399,7 @@ document.addEventListener("keydown", (e) => {
       player.x = newX;
       player.y = newY;      
     }       
-
+        
     drawMap();      
     drawStats();        
     drawEquipment();        
